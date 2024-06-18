@@ -1,11 +1,11 @@
-const express = require('express');
-const app = express();
-const connectDB = require('./config/DbConnection')
+const connectDB = require('./config/DbConnection');
+const config = require('./utils/constants');
 
-const startServer = async () => {
+const startServer = async (app) => {
   try {
-    connectDB()
-    const port = process.env.PORT || 5000;
+    // Connect to the database
+    await connectDB();
+    const port = config.PORT || 9000;
     app.listen(port, () => {
       console.log(`Server is listening on port ${port}`);
     });
