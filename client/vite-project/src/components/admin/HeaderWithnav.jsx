@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function HeaderWithnav () {
+function HeaderWithnav() {
   return (
     <div className="fixed top-0 z-50 bg-slate-800 w-full h-14">
       <header className="flex items-center justify-between h-full px-4">
@@ -11,9 +11,24 @@ function HeaderWithnav () {
             className="h-12"
           />
           <nav className="ml-8 flex space-x-8">
-            <Link to="/Home" className="text-white px-1 py-1 rounded-md hover:bg-green-500">Home</Link>
-            <Link to="/EmployerList" className="text-white px-1 py-1 rounded-md hover:bg-green-500">Employment List</Link>
-            <Link to="/createEmployee" className=" text-white px-1 py-1 rounded-md hover:bg-green-500 transition duration-300">CreateEmploye +</Link>
+            <Link
+              to="/Home"
+              className="text-white px-1 py-1 rounded-md hover:bg-green-500"
+            >
+              Home
+            </Link>
+            <Link
+              to="/EmployerList"
+              className="text-white px-1 py-1 rounded-md hover:bg-green-500"
+            >
+              Employment List
+            </Link>
+            <Link
+              to="/createEmployee"
+              className=" text-white px-1 py-1 rounded-md hover:bg-green-500 transition duration-300"
+            >
+              CreateEmploye +
+            </Link>
           </nav>
         </div>
         <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
@@ -25,4 +40,3 @@ function HeaderWithnav () {
 }
 
 export default HeaderWithnav;
-

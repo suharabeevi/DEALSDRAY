@@ -2,15 +2,13 @@ const asyncHandler = require("express-async-handler");
 const AppError = require("../utils/AppError");
 // const config = require('../utils/constants')
 const HttpStatusCodes = require("../utils/middlewares/statusCodes");
-const { Employee ,validateEmployee } = require("../models/EmployerModel");
+const { Employee ,JoiEmployeeSchemavalidate } = require("../models/EmployerModel");
 const crypto = require("crypto");
 
 const AdminCreateEmployer = asyncHandler(async (req, res, next) => {
   try {
-    console.log(req.body);
-
     // Validate the request body
-    const { error } = validateEmployee(req.body);
+    const { error } = JoiEmployeeSchemavalidate(req.body);
 
     if (error) {
       throw new AppError(error.details[0].message, HttpStatusCodes.BAD_REQUEST);
@@ -23,7 +21,7 @@ const AdminCreateEmployer = asyncHandler(async (req, res, next) => {
       f_Designation,
       f_Gender,
       f_Course,
-      f_CreateDate,
+      
     } = req.body;
 
     // Check if employee already exists
@@ -43,7 +41,7 @@ const AdminCreateEmployer = asyncHandler(async (req, res, next) => {
       f_Designation,
       f_Gender,
       f_Course,
-      f_CreateDate,
+      
     });
 
     await newEmployee.save();
@@ -63,4 +61,29 @@ const AdminCreateEmployer = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
-module.exports = AdminCreateEmployer;
+
+const GetAllEmployer = asyncHandler(async (req, res, next) => {
+  try {
+    const AllEmployer = await Employee.find();
+    if (AllEmployer.length === 0) {
+      return next(
+        new AppError(
+          "Employer List is Empty",
+          HttpStatusCodes.NOT_FOUND
+        )
+      );
+    }
+    res.status(HttpStatusCodes.SUCCESS).json({
+      message: "Fetch all the employers successfully",
+      employee: AllEmployer,
+    });
+  } catch (error) {
+    if (error instanceof AppError) {
+      return next(error);
+    }
+    next(new AppError("Internal Server error", HttpStatusCodes.INTERNAL_SERVER_ERROR));
+  }
+});
+
+
+module.exports = {AdminCreateEmployer,GetAllEmployer};

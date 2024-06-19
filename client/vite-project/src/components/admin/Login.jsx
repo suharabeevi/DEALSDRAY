@@ -15,8 +15,7 @@ function Login() {
               placeholder="Enter your email"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
-            </div>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"></div>
           </div>
           <div className="relative mb-4">
             <span>Password</span>
@@ -26,8 +25,7 @@ function Login() {
               placeholder="Enter your password"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
-            </div>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"></div>
           </div>
           <button
             type="submit"
@@ -35,8 +33,7 @@ function Login() {
           >
             Submit
           </button>
-          <p className="mt-4 text-center">
-          </p>
+          <p className="mt-4 text-center"></p>
         </form>
       </div>
     </div>
