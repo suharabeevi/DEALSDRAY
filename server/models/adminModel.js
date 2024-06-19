@@ -36,6 +36,15 @@ const AdminSchema = new mongoose.Schema({
     return schema.validate(data);
   };
 
+  const LoginValidate = (data)=>{
+    const schema = Joi.object({
+      f_userName: Joi.string().required().label("f_userName"),
+      f_Pwd: passwordcomplexity().required().label("f_Pwd"),
+  });
+
+  return schema.validate(data);
+  }
+
   AdminSchema.pre("save", async function (next) {
     try {
         if (!this.isModified('f_Pwd')) return next();
@@ -48,4 +57,4 @@ const AdminSchema = new mongoose.Schema({
 })
 const adminModel = mongoose.model('admin', AdminSchema);
 
-module.exports = {adminModel  ,validate};
+module.exports = {adminModel  ,validate, LoginValidate};
