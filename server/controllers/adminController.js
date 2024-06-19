@@ -46,6 +46,7 @@ const HandleSuperAdminSignup = asyncHandler(async (req, res, next) => {
 });
 
 const handleSuperAminLogin = asyncHandler(async (req, res, next) => {
+  
   const { error } = LoginValidate(req.body);
   if (error) {
     return next(

@@ -6,6 +6,7 @@ const errorHandler = require('./utils/middlewares/ErrorHandling');
 
 // Requiring routes
 const AdminRoute = require('./routes/adminRouter');
+const EmplyerRoute = require('./routes/EmployerRouter')
 
 // Create Express app
 const app = express();
@@ -17,6 +18,7 @@ app.use(morgan("dev"));
 
 // Admin route
 app.use('/api/v1/auth', AdminRoute);
+app.use('/api/v2', EmplyerRoute);
 
 // Global error handling middleware
 app.use(errorHandler);

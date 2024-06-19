@@ -1,9 +1,22 @@
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { toast ,ToastContainer} from "react-toastify";
 function HeaderWithnav() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear localStorage or sessionStorage
+    localStorage.removeItem('name'); // Clear specific item
+    localStorage.removeItem('token')
+    toast.dark("Logout successful!", { onClose: () => navigate("/login") });
+  };
+
   return (
     <div className="fixed top-0 z-50 bg-slate-800 w-full h-14">
+              <ToastContainer />
+
       <header className="flex items-center justify-between h-full px-4">
+      
+
         <div className="flex items-center">
           <img
             src="https://res.cloudinary.com/dpgbodkae/image/upload/v1718785546/360_F_65756860_GUZwzOKNMUU3HldFoIA44qss7ZIrCG8I_u4kpy2.jpg"
@@ -31,7 +44,7 @@ function HeaderWithnav() {
             </Link>
           </nav>
         </div>
-        <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
+        <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
           Logout
         </button>
       </header>

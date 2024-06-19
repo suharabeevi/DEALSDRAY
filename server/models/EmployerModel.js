@@ -81,24 +81,6 @@ const JoiEmployeeSchemavalidate = (data) => {
   return JoiEmployeeSchema.validate(data);
 };
 
-//   employeeSchema.pre('save', async function (next) {
-//     const Employee = this;
-
-//     // Validate user data using Joi
-//     const { error } = JoiEmployeeSchema.validate(Employee.toObject(), { abortEarly: false });
-//     if (error) {
-//         // Convert Joi validation errors to Mongoose validation error
-//         const mongooseError = new mongoose.Error.ValidationError(null);
-//         error.details.forEach((err) => {
-//             mongooseError.errors[err.path[0]] = new mongoose.Error.ValidatorError({
-//                 path: err.path[0],
-//                 message: err.message,
-//             });
-//         });
-//         return next(mongooseError);
-//     }
-//     next();
-// });
 // Create the Employee model
 const Employee = mongoose.model("Employee", employeeSchema);
 module.exports = { Employee, JoiEmployeeSchemavalidate };

@@ -11,11 +11,12 @@ function App() {
       <Router>
         <Routes>
           {/* <Route path="/*" exact element={<RegisterComponent/>}/> */}
+          <Route path="/" element={<AdminLogin/>} />
 
-          <Route path="/home*" element={<DashBoardpages />} />
-          <Route path="/login*" element={<AdminLogin />} />
-          <Route path="/EmployerList*" element={<Allemployerlist />} />
-          <Route path="/editEmployee*" exact element={<UpdateEmployer />} />
+          <Route path="/home" element={<DashBoardpages />} />
+          <Route path="/login" element={<AdminLogin />} />
+          <Route path="/EmployerList" element={<Allemployerlist />} />
+          <Route path="/editEmployee" exact element={<UpdateEmployer />} />
 
           <Route
             path="/createEmployee*"
