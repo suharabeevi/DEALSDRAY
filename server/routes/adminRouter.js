@@ -3,13 +3,16 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    HandleSuperAdminSignup,
-    handleSuperAminLogin
-} = require('../controllers/adminController')
+  HandleSuperAdminSignup,
+  handleSuperAminLogin,
+} = require("../controllers/adminController");
 
-router.route('/signup').post(HandleSuperAdminSignup)
+const AdminCreateEmployer = require("../controllers/EmployerController");
 
-router.route('/login').post(handleSuperAminLogin)
+router.route("/signup").post(HandleSuperAdminSignup);
 
-module.exports= router
+router.route("/login").post(handleSuperAminLogin);
 
+router.route("/createEmploye").post(AdminCreateEmployer);
+
+module.exports = router;
