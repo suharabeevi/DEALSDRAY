@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 function HeaderWithnav () {
   return (
@@ -10,9 +11,9 @@ function HeaderWithnav () {
             className="h-12"
           />
           <nav className="ml-8 flex space-x-8">
-            <a href="#" className="text-white hover:text-gray-300">Home</a>
-            <a href="#" className="text-white hover:text-gray-300">Employment List</a>
-            <button className="bg-white text-black px-1 py-1 rounded-md hover:bg-green-500 transition duration-300">CreateEmploye +</button>
+            <Link to="/Home" className="text-white px-1 py-1 rounded-md hover:bg-green-500">Home</Link>
+            <Link to="/EmployerList" className="text-white px-1 py-1 rounded-md hover:bg-green-500">Employment List</Link>
+            <Link to="/createEmployee" className=" text-white px-1 py-1 rounded-md hover:bg-green-500 transition duration-300">CreateEmploye +</Link>
           </nav>
         </div>
         <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">

@@ -8,6 +8,8 @@
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Login from "./components/admin/Login";
 import CreateEmployee from "./components/admin/CreateEmployee";
+import EmployerList from "./components/admin/EmployerList";
+import Dashboard from "./components/admin/Dashboard";
 
 
 function App() {
@@ -17,7 +19,10 @@ function App() {
   <Routes>
   {/* <Route path="/*" exact element={<RegisterComponent/>}/> */}
   
+  <Route path="/home*" element={<Dashboard/>}/>
   <Route path="/login*" element={<Login/>}/>
+  <Route path="/EmployerList*" element={<EmployerList/>}/>
+
   <Route path="/createEmployee*" exact element={<CreateEmployee/>}/>
 
   </Routes>
