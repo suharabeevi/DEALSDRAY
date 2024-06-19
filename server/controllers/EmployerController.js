@@ -10,6 +10,7 @@ const crypto = require("crypto");
 
 const AdminCreateEmployer = asyncHandler(async (req, res, next) => {
   try {
+    console.log(req.body, req.file);
     // Validate the request body
     const { error } = JoiEmployeeSchemavalidate(req.body);
 
@@ -17,7 +18,7 @@ const AdminCreateEmployer = asyncHandler(async (req, res, next) => {
       throw new AppError(error.details[0].message, HttpStatusCodes.BAD_REQUEST);
     }
     const {
-      //   f_Image,
+  
       f_Name,
       f_Email,
       f_Mobile,

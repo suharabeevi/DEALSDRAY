@@ -36,8 +36,8 @@ const employeeSchema = new mongoose.Schema({
     enum: ["Male", "Female"], // Assuming gender options
   },
   f_Course: {
-    type: String,
-    required: true,
+    type: [String], // Change to array of strings
+    required: true
   },
   f_CreateDate: {
     type: Date,
@@ -75,7 +75,7 @@ const JoiEmployeeSchemavalidate = (data) => {
       }),
     f_Designation: Joi.string().required().label("Designation"),
     f_Gender: Joi.string().required().valid("Male", "Female").label("Gender"),
-    f_Course: Joi.string().required().label("Course"),
+    f_Course: Joi.array().items(Joi.string()).required().label("Course"), // Change to array of strings
     f_CreateDate: Joi.date().default(() => new Date()),
   });
   return JoiEmployeeSchema.validate(data);
