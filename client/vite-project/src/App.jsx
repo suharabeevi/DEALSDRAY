@@ -10,6 +10,7 @@ import Login from "./components/admin/Login";
 import CreateEmployee from "./components/admin/CreateEmployee";
 import EmployerList from "./components/admin/EmployerList";
 import Dashboard from "./components/admin/Dashboard";
+import EditEmployerForm from "./components/admin/EditEmployerForm";
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
   <Route path="/home*" element={<Dashboard/>}/>
   <Route path="/login*" element={<Login/>}/>
   <Route path="/EmployerList*" element={<EmployerList/>}/>
+  <Route path="/editEmployee*" exact element={<EditEmployerForm/>}/>
+
 
   <Route path="/createEmployee*" exact element={<CreateEmployee/>}/>
 

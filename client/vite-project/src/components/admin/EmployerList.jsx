@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import HeaderWithnav from "./HeaderWithnav"
 
 function EmployerList() {
@@ -42,11 +43,12 @@ function EmployerList() {
               <td className="py-3 px-4 border-r border-gray-300">suharaaa</td>
               <td className="py-3 px-4 border-r border-gray-300">suharaaa</td>
               <td className="py-3 px-4">
-                <button
+                <Link
+                to="/editEmployee"
                   className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600 transition duration-300"
                 >
                   Edit
-                </button>
+                </Link>
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
                 >
