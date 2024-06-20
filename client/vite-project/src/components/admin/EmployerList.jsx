@@ -1,3 +1,4 @@
+
 import  { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HeaderWithnav from './HeaderWithnav';
@@ -6,16 +7,20 @@ import { GetAllEmployersList } from '../../services/AdminEmployerservices';
 function EmployerList() {
   const [employers, setEmployers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchEmployers = async () => {
       try {
         setLoading(true);
         const response = await GetAllEmployersList();
-        const { data: { employee } } = response; 
+        const { data: { employee } } = response;
         setEmployers(employee);
+        setError(null);
       } catch (error) {
         console.error('Error fetching employers:', error);
+        setError('Failed to fetch employers. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -24,11 +29,28 @@ function EmployerList() {
     fetchEmployers();
   }, []);
 
-
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredEmployers = employers.filter((employer) => {
+    const searchTermLower = searchTerm.toLowerCase();
+  
+    // Check if any of the fields contain the searchTerm in a case-insensitive manner
+    return (
+      (employer.f_Name && employer.f_Name.toString().toLowerCase().includes(searchTermLower)) ||
+      (employer.f_Email && employer.f_Email.toString().toLowerCase().includes(searchTermLower)) ||
+      (employer.f_Id && employer.f_Id.toString().toLowerCase().includes(searchTermLower)) )
+      // (employer.f_CreateDate && employer.f_CreateDate.toLocaleDateString('en-US').includes(searchTermLower))
+    
+  });
+  
+  
 
   return (
     <div>
@@ -38,6 +60,15 @@ function EmployerList() {
         <h1 className="bg-yellow-300 text-center py-2 text-2xl font-normal">
           Employer List
         </h1>
+        <div className="my-4 mx-2 flex justify-end ml-6">
+          <input
+            type="text"
+            placeholder="Search by Name,ID,Email..."
+            className="border border-gray-300 px-3 py-2 rounded-md w-96"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </div>
         <table className="min-w-full bg-white border border-gray-200">
           <thead className="bg-gray-800 text-white">
             <tr>
@@ -60,14 +91,20 @@ function EmployerList() {
                   Loading...
                 </td>
               </tr>
-            ) : employers.length === 0 ? (
+            ) : error ? (
+              <tr>
+                <td colSpan="10" className="text-center py-4">
+                  {error}
+                </td>
+              </tr>
+            ) : filteredEmployers.length === 0 ? (
               <tr>
                 <td colSpan="10" className="text-center py-4">
                   No employers found
                 </td>
               </tr>
             ) : (
-              employers.map((employer) => (
+              filteredEmployers.map((employer) => (
                 <tr key={employer._id} className="border-b border-gray-200">
                   <td className="py-3 px-4 border-r border-gray-300">
                     {employer.f_Id}
@@ -102,12 +139,14 @@ function EmployerList() {
                   </td>
                   <td className="py-3 px-4">
                     <Link
-                     
                       className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600 transition duration-300"
                     >
                       Edit
                     </Link>
-                    <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+                      // onClick={() => handleDelete(employer._id)}
+                    >
                       Delete
                     </button>
                   </td>

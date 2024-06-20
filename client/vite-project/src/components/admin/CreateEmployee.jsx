@@ -115,7 +115,6 @@ const navigate = useNavigate()
         console.log(data);
         if (data.success) {
           toast.success(data.message, { onClose: () => navigate("/EmployerList") });
-          // Optionally reset the form
           setFormData({
             f_Name: "",
             f_Email: "",
