@@ -46,6 +46,7 @@ const employeeSchema = new mongoose.Schema({
 });
 
 const JoiEmployeeSchemavalidate = (data) => {
+  console.log(data);
   const JoiEmployeeSchema = Joi.object({
     f_Name: Joi.string().min(3).max(50).required().label("Name").messages({
       "string.min": `"Name" should have a minimum length of {#limit}`,

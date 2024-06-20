@@ -7,7 +7,6 @@ import {
 } from "../../services/AdminEmployerservices";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import DeleteConfirmationModal from "./ConfirmDelete";
 
 function EmployerList() {
@@ -27,6 +26,7 @@ function EmployerList() {
           data: { employee },
         } = response;
         setEmployers(employee);
+        console.log(employee,"employerssss");
         setError(null);
       } catch (error) {
         console.error("Error fetching employers:", error);
@@ -47,6 +47,7 @@ function EmployerList() {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
+
   const handleDeleteClick = (employerId) => {
     setEmployerToDelete(employerId);
     setShowDeleteModal(true);
@@ -56,37 +57,36 @@ function EmployerList() {
     setShowDeleteModal(false);
     setEmployerToDelete(null);
   };
+
   const handleConfirmDelete = async () => {
     try {
       await ConformEmployeDelete(employerToDelete);
       const updatedEmployers = employers.filter(
         (emp) => emp._id !== employerToDelete
       );
-
       setEmployers(updatedEmployers);
-      // Close modal
       setShowDeleteModal(false);
-      toast.dark("Deleteing employer");
+      toast.success("Employer deleted successfully");
     } catch (error) {
       console.error("Error deleting employer:", error);
-      // Handle error
+      toast.error("Failed to delete employer. Please try again.");
     }
   };
 
-  const filteredEmployers = employers.filter((employer) => {
-    const searchTermLower = searchTerm.toLowerCase();
+  const filteredEmployers = searchTerm
+    ? employers.filter((employer) => {
+        const searchTermLower = searchTerm.toLowerCase();
+        return (
+          (employer.f_Name &&
+            employer.f_Name.toString().toLowerCase().includes(searchTermLower)) ||
+          (employer.f_Email &&
+            employer.f_Email.toString().toLowerCase().includes(searchTermLower)) ||
+          (employer.f_Id &&
+            employer.f_Id.toString().toLowerCase().includes(searchTermLower))
+        );
+      })
+    : employers;
 
-    // Check if any of the fields contain the searchTerm in a case-insensitive manner
-    return (
-      (employer.f_Name &&
-        employer.f_Name.toString().toLowerCase().includes(searchTermLower)) ||
-      (employer.f_Email &&
-        employer.f_Email.toString().toLowerCase().includes(searchTermLower)) ||
-      (employer.f_Id &&
-        employer.f_Id.toString().toLowerCase().includes(searchTermLower))
-    );
-    // (employer.f_CreateDate && employer.f_CreateDate.toLocaleDateString('en-US').includes(searchTermLower))
-  });
   return (
     <div>
       <HeaderWithnav />
@@ -112,14 +112,10 @@ function EmployerList() {
               <th className="py-2 px-4 border-r border-gray-300">Name</th>
               <th className="py-2 px-4 border-r border-gray-300">Email</th>
               <th className="py-2 px-4 border-r border-gray-300">Mobile No</th>
-              <th className="py-2 px-4 border-r border-gray-300">
-                Designation
-              </th>
+              <th className="py-2 px-4 border-r border-gray-300">Designation</th>
               <th className="py-2 px-4 border-r border-gray-300">Gender</th>
               <th className="py-2 px-4 border-r border-gray-300">Course</th>
-              <th className="py-2 px-4 border-r border-gray-300">
-                Create Date
-              </th>
+              <th className="py-2 px-4 border-r border-gray-300">Create Date</th>
               <th className="py-2 px-4">Actions</th>
             </tr>
           </thead>
@@ -142,7 +138,8 @@ function EmployerList() {
                   No employers found
                 </td>
               </tr>
-            ) : (
+            ) : 
+            (
               filteredEmployers.map((employer) => (
                 <tr key={employer._id} className="border-b border-gray-200">
                   <td className="py-3 px-4 border-r border-gray-300">

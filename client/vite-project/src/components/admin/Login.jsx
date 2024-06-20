@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const [toastShown, setToastShown] = useState(false);
+
   const [loginData, setLoginData] = useState({
     f_userName: "",
     f_Pwd: ""
@@ -58,12 +60,14 @@ function Login() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      // Redirect to login page if token is missing
+      if (!toastShown) {
+        toast.error('Session expired. Please log in again.');
+        setToastShown(true);
+      }
+      // Redirect to login page
       navigate('/login');
-      toast.error('Session expired. Please log in again.');
     }
-  }, []);
-
+  }, [toastShown, navigate]);
   return (
     <div>
       <Header />

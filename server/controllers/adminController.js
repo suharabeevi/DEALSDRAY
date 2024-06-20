@@ -6,6 +6,7 @@ const HttpStatusCodes = require("../utils/middlewares/statusCodes");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+
 const HandleSuperAdminSignup = asyncHandler(async (req, res, next) => {
   const { error } = validate(req.body);
   if (error) {
