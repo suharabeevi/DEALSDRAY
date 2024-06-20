@@ -49,9 +49,6 @@ function EmployerList() {
       // (employer.f_CreateDate && employer.f_CreateDate.toLocaleDateString('en-US').includes(searchTermLower))
     
   });
-  
-  
-
   return (
     <div>
       <HeaderWithnav />

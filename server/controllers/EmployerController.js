@@ -107,4 +107,25 @@ const GetAllEmployer = asyncHandler(async (req, res, next) => {
 });
 
 
-module.exports = { AdminCreateEmployer, GetAllEmployer };
+const DeleteEmployerById = asyncHandler(async (req, res, next) => {
+  try {
+    const { EmployerId } = req.params;
+console.log(EmployerId);
+    // Assuming you have a method to find and delete employers in your service
+    const deletedEmployer = await Employee.findByIdAndDelete(EmployerId);
+
+    if (!deletedEmployer) {
+      return res.status(404).json({ success: false, message: 'Employer not found' });
+    }
+
+    res.status(HttpStatusCodes.SUCCESS).json({
+      success: true,
+      message: 'Employer deleted successfully',
+    });
+  } catch (error) {
+    console.error("Error in DeleteEmployerById:", error);
+    next(new AppError("Internal Server error", HttpStatusCodes.INTERNAL_SERVER_ERROR));
+  }
+});
+
+module.exports = { AdminCreateEmployer, GetAllEmployer ,DeleteEmployerById};
