@@ -46,6 +46,7 @@ const navigate = useNavigate()
       }));
     } else if (type === "file") {
       const file = files[0];
+      
       setFormData((prev) => ({
         ...prev,
         [name]: file
@@ -61,63 +62,84 @@ const navigate = useNavigate()
 
   const validateForm = () => {
     const errors = {};
+    
     if (!formData.f_Name.trim()) {
       errors.f_Name = "Name is required";
     }
+    
     if (!formData.f_Email.trim()) {
       errors.f_Email = "Email is required";
     } else if (!/\S+@gmail\.com/.test(formData.f_Email)) {
       errors.f_Email = "Email must be a valid Gmail address";
     }
+    
     if (!formData.f_Mobile.trim()) {
       errors.f_Mobile = "Phone is required";
     } else if (!/^\d{10}$/.test(formData.f_Mobile)) {
       errors.f_Mobile = "Phone number must be 10 digits";
     }
+    
     if (!formData.f_Designation.trim()) {
       errors.f_Designation = "Designation is required";
     }
+    
     if (!formData.f_Gender.trim()) {
       errors.f_Gender = "Gender is required";
     }
+    
     if (formData.f_Course.length === 0) {
       errors.f_Course = "Select at least one course";
     }
+    
+    if (formData.f_Image) {
+      const file = formData.f_Image;
+      if (file && !['image/png', 'image/jpeg'].includes(file.type)) {
+        errors.f_Image = "Only PNG and JPG files are allowed";
+      }
+    } else {
+      errors.f_Image = "Image is required";
+    }
+  
     setErrors(errors);
     return Object.keys(errors).length === 0;
-  };
+  }
+  ;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const isValid = validateForm();
     if (isValid) {
       try {
-        
         const { data } = await CreateEmployer(formData);
         console.log(data);
-        if(data.data.message === "Employee registered successfully"){
-            toast.success("Login successful!", { onClose: () => navigate("/EmployerList") });
-
-        }else{
-            toast.dark(data.data.message, { onClose: () => navigate("/EmployerList") });
-
+        if (data.success) {
+          toast.success(data.message, { onClose: () => navigate("/EmployerList") });
+          // Optionally reset the form
+          setFormData({
+            f_Name: "",
+            f_Email: "",
+            f_Mobile: "",
+            f_Designation: "",
+            f_Gender: "",
+            f_Course: "",
+            f_Image: null
+          });
+          setImagePreview(null);
+        } else {
+          toast.error(data.message);
         }
-        // Optionally reset the form
-        setFormData({
-          f_Name: "",
-          f_Email: "",
-          f_Mobile: "",
-          f_Designation: "",
-          f_Gender: "",
-          f_Course: "",
-          f_Image: null
-        });
-        setImagePreview(null);
       } catch (error) {
         console.error("Error creating employer:", error);
+        // Check if the error is an Axios error
+        if (error.response && error.response.data && error.response.data.message) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An unexpected error occurred. Please try again.");
+        }
       }
     }
   };
+  
 
   return (
     <div>
@@ -307,11 +329,13 @@ const navigate = useNavigate()
               className={`flex-1 px-4 py-2 border ${
                 errors.f_Image ? "border-red-500" : "border-gray-300"
               } rounded-md focus:outline-none focus:border-blue-500`}
-              accept="image/*"
-              onChange={handleChange}
+              accept="image/png, image/jpg"
+                            onChange={handleChange}
             />
           </div>
-
+          {errors.f_Image && (
+    <p className="text-red-500 text-sm mt-2">{errors.f_Image}</p>
+  )}
           {imagePreview && (
             <div className="relative mb-4 flex items-center">
               <label className="block text-gray-700 w-24">Preview</label>
