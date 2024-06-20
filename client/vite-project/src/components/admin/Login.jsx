@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import { login } from "../../services/AuthService";
 import { ToastContainer, toast } from "react-toastify";
@@ -54,6 +54,15 @@ function Login() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // Redirect to login page if token is missing
+      navigate('/login');
+      toast.error('Session expired. Please log in again.');
+    }
+  }, []);
 
   return (
     <div>

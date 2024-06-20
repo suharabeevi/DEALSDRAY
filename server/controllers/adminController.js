@@ -80,7 +80,7 @@ const handleSuperAminLogin = asyncHandler(async (req, res, next) => {
     };
 
     const token = jwt.sign(payload, config.JWT_SECRET);
-    console.log(token);
+    
 
     return res
       .status(HttpStatusCodes.OK)

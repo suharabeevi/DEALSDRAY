@@ -1,6 +1,21 @@
+import { useEffect } from "react";
 import HeaderWithnav from "./HeaderWithnav";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
+  const navigate = useNavigate(); // Define navigate hook first
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // Redirect to login page if token is missing
+      navigate('/login');
+      toast.error('Session expired. Please log in again.');
+    }
+  }, []);
+
   return (
     <div>
       <HeaderWithnav />

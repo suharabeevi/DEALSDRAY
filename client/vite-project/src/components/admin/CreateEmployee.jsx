@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeaderWithnav from "./HeaderWithnav";
 import { CreateEmployer } from "../../services/AdminEmployerservices";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+
 function CreateEmployee() {
   const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
@@ -139,7 +140,14 @@ const navigate = useNavigate()
       }
     }
   };
-  
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // Redirect to login page if token is missing
+      navigate('/login');
+      toast.error('Session expired. Please log in again.');
+    }
+  }, []);
 
   return (
     <div>
@@ -329,7 +337,7 @@ const navigate = useNavigate()
               className={`flex-1 px-4 py-2 border ${
                 errors.f_Image ? "border-red-500" : "border-gray-300"
               } rounded-md focus:outline-none focus:border-blue-500`}
-              accept="image/png, image/jpg"
+              accept="image/png,image/jpg"
                             onChange={handleChange}
             />
           </div>

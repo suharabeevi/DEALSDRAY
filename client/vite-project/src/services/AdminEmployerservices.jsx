@@ -44,4 +44,5 @@ export const CreateEmployer = async (formData) => {
         'Content-Type': 'multipart/form-data'
       }
     });
-  };
+  }
+export const GetAllEmployersList = async ()=> await instance.get(`/v2/getallEmployee`)

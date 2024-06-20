@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const startServer = require('./StartServer');
 const errorHandler = require('./utils/middlewares/ErrorHandling');
+ const handleVerifyAdmin = require("./utils/middlewares/VerifyAdmin");
 
 // Requiring routes
 const AdminRoute = require('./routes/adminRouter');
@@ -18,7 +19,7 @@ app.use(morgan("dev"));
 
 // Admin route
 app.use('/api/v1/auth', AdminRoute);
-app.use('/api/v2', EmplyerRoute);
+app.use('/api/v2',handleVerifyAdmin, EmplyerRoute);
 
 // Global error handling middleware
 app.use(errorHandler);

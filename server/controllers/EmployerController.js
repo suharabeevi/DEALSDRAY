@@ -86,27 +86,25 @@ const AdminCreateEmployer = asyncHandler(async (req, res, next) => {
 
 const GetAllEmployer = asyncHandler(async (req, res, next) => {
   try {
-    const AllEmployer = await Employee.find();
-    if (AllEmployer.length === 0) {
-      return next(
-        new AppError("Employer List is Empty", HttpStatusCodes.NOT_FOUND)
-      );
+    const allEmployer = await Employee.find();
+
+    if (allEmployer.length === 0) {
+      return res.status(HttpStatusCodes.NOT_FOUND).json({
+        success: false,
+        message: "Employer List is Empty"
+      });
     }
+
     res.status(HttpStatusCodes.SUCCESS).json({
+      success: true,
       message: "Fetch all the employers successfully",
-      employee: AllEmployer,
+      employee: allEmployer,
     });
   } catch (error) {
-    if (error instanceof AppError) {
-      return next(error);
-    }
-    next(
-      new AppError(
-        "Internal Server error",
-        HttpStatusCodes.INTERNAL_SERVER_ERROR
-      )
-    );
+    console.error("Error in GetAllEmployer:", error);
+    next(new AppError("Internal Server error", HttpStatusCodes.INTERNAL_SERVER_ERROR));
   }
 });
+
 
 module.exports = { AdminCreateEmployer, GetAllEmployer };
