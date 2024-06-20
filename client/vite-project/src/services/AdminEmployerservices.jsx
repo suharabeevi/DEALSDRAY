@@ -46,3 +46,5 @@ export const CreateEmployer = async (formData) => {
     });
   }
 export const GetAllEmployersList = async ()=> await instance.get(`/v2/getallEmployee`)
+
+export const ConformEmployeDelete = async (EmployerId) => await instance.delete(`/v2/deleteEmploye/${EmployerId}`)
