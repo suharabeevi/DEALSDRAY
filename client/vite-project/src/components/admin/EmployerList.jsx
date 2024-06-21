@@ -9,6 +9,31 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteConfirmationModal from "./ConfirmDelete";
 
+function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const pages = [];
+
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-white p-4 border-t border-gray-300 flex justify-center">
+      {pages.map((page) => (
+        <button
+          key={page}
+          onClick={() => onPageChange(page)}
+          className={`px-3 py-1 mx-1 border rounded ${
+            page === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200'
+          }`}
+        >
+          {page}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function EmployerList() {
   const [employers, setEmployers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +41,8 @@ function EmployerList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [employerToDelete, setEmployerToDelete] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchEmployers = async () => {
@@ -26,7 +53,7 @@ function EmployerList() {
           data: { employee },
         } = response;
         setEmployers(employee);
-        console.log(employee,"employerssss");
+        console.log(employee, "employerssss");
         setError(null);
       } catch (error) {
         console.error("Error fetching employers:", error);
@@ -73,6 +100,10 @@ function EmployerList() {
     }
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   const filteredEmployers = searchTerm
     ? employers.filter((employer) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -87,6 +118,10 @@ function EmployerList() {
       })
     : employers;
 
+  const indexOfLastEmployer = currentPage * itemsPerPage;
+  const indexOfFirstEmployer = indexOfLastEmployer - itemsPerPage;
+  const currentEmployers = filteredEmployers.slice(indexOfFirstEmployer, indexOfLastEmployer);
+
   return (
     <div>
       <HeaderWithnav />
@@ -95,14 +130,20 @@ function EmployerList() {
         <h1 className="bg-yellow-300 text-center py-2 text-2xl font-normal">
           Employer List
         </h1>
-        <div className="my-4 mx-2 flex justify-end ml-6">
-          <input
-            type="text"
-            placeholder="Search by Name,ID,Email..."
-            className="border border-gray-300 px-3 py-2 rounded-md w-96"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
+        
+        <div className="my-4 mx-2 flex justify-between items-center">
+          <div>
+            <input
+              type="text"
+              placeholder="Search by Name,ID,Email..."
+              className="border border-gray-300 px-3 py-2 rounded-md w-96"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </div>
+          <div className="text-gray-600 bg-slate-200 p-3">
+            Total Employers: {employers.length}
+          </div>
         </div>
         <table className="min-w-full bg-white border border-gray-200">
           <thead className="bg-gray-800 text-white">
@@ -132,15 +173,14 @@ function EmployerList() {
                   {error}
                 </td>
               </tr>
-            ) : filteredEmployers.length === 0 ? (
+            ) : currentEmployers.length === 0 ? (
               <tr>
                 <td colSpan="10" className="text-center py-4">
                   No employers found
                 </td>
               </tr>
-            ) : 
-            (
-              filteredEmployers.map((employer) => (
+            ) : (
+              currentEmployers.map((employer) => (
                 <tr key={employer._id} className="border-b border-gray-200">
                   <td className="py-3 px-4 border-r border-gray-300">
                     {employer.f_Id}
@@ -174,7 +214,7 @@ function EmployerList() {
                     {formatDate(employer.f_CreateDate)}
                   </td>
                   <td className="py-3 px-4">
-                    <Link to={`/editEmployee/${employer._id}`}  className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600 transition duration-300">
+                    <Link to={`/editEmployee/${employer._id}`} className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600 transition duration-300">
                       Edit
                     </Link>
                     <button
@@ -195,6 +235,12 @@ function EmployerList() {
         isOpen={showDeleteModal}
         onCancel={handleCancelDelete}
         onConfirm={handleConfirmDelete}
+      />
+      <Pagination
+        totalItems={filteredEmployers.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
       />
     </div>
   );

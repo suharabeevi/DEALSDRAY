@@ -50,7 +50,8 @@ function Login() {
       localStorage.setItem('name', data.data.f_userName);
       toast.success("Login successful!", { onClose: () => navigate("/home") });
     } catch (error) {
-      setError("Invalid username or password");
+      // setError("Invalid username or password");
+      toast.error("Invalid username or password!")
       
     } finally {
       setIsLoading(false);
@@ -107,6 +108,11 @@ function Login() {
             {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
+        {/* <div className="ml-5 bg-slate-200 p-5">
+          <p>username:superAdmin</p>
+          <p>password:superAdmin@123</p>
+
+        </div> */}
       </div>
     </div>
   );

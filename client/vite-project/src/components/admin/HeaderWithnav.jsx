@@ -34,7 +34,7 @@ function HeaderWithnav() {
               to="/EmployerList"
               className="text-white px-1 py-1 rounded-md hover:bg-green-500"
             >
-              Employment List
+              Employers List
             </Link>
             <Link
               to="/createEmployee"
