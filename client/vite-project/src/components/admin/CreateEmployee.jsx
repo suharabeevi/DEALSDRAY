@@ -3,7 +3,7 @@ import HeaderWithnav from "./HeaderWithnav";
 import { CreateEmployer } from "../../services/AdminEmployerservices";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 function CreateEmployee() {
   const [imagePreview, setImagePreview] = useState(null);
@@ -14,7 +14,7 @@ function CreateEmployee() {
     f_Designation: "",
     f_Gender: "",
     f_Course: [],
-    f_Image: null
+    f_Image: null,
   });
   const [errors, setErrors] = useState({});
 
@@ -28,7 +28,7 @@ function CreateEmployee() {
       reader.readAsDataURL(file);
     }
   };
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleChange = (event) => {
     const { name, value, type, checked, files } = event.target;
     if (type === "checkbox") {
@@ -43,69 +43,67 @@ const navigate = useNavigate()
       }
       setFormData((prev) => ({
         ...prev,
-        f_Course: updatedCourses
+        f_Course: updatedCourses,
       }));
     } else if (type === "file") {
       const file = files[0];
-      
+
       setFormData((prev) => ({
         ...prev,
-        [name]: file
+        [name]: file,
       }));
       handleImageChange(event);
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
-
+  //form validation
   const validateForm = () => {
     const errors = {};
-    
+
     if (!formData.f_Name.trim()) {
       errors.f_Name = "Name is required";
     }
-    
+
     if (!formData.f_Email.trim()) {
       errors.f_Email = "Email is required";
     } else if (!/\S+@gmail\.com/.test(formData.f_Email)) {
       errors.f_Email = "Email must be a valid Gmail address";
     }
-    
+
     if (!formData.f_Mobile.trim()) {
       errors.f_Mobile = "Phone is required";
     } else if (!/^\d{10}$/.test(formData.f_Mobile)) {
       errors.f_Mobile = "Phone number must be 10 digits";
     }
-    
+
     if (!formData.f_Designation.trim()) {
       errors.f_Designation = "Designation is required";
     }
-    
+
     if (!formData.f_Gender.trim()) {
       errors.f_Gender = "Gender is required";
     }
-    
+
     if (formData.f_Course.length === 0) {
       errors.f_Course = "Select at least one course";
     }
-    
+
     if (formData.f_Image) {
       const file = formData.f_Image;
-      if (file && !['image/png', 'image/jpeg'].includes(file.type)) {
+      if (file && !["image/png", "image/jpeg"].includes(file.type)) {
         errors.f_Image = "Only PNG and JPG files are allowed";
       }
     } else {
       errors.f_Image = "Image is required";
     }
-  
+
     setErrors(errors);
     return Object.keys(errors).length === 0;
-  }
-  ;
-
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const isValid = validateForm();
@@ -114,7 +112,9 @@ const navigate = useNavigate()
         const { data } = await CreateEmployer(formData);
         console.log(data);
         if (data.success) {
-          toast.success(data.message, { onClose: () => navigate("/EmployerList") });
+          toast.success(data.message, {
+            onClose: () => navigate("/EmployerList"),
+          });
           setFormData({
             f_Name: "",
             f_Email: "",
@@ -122,7 +122,7 @@ const navigate = useNavigate()
             f_Designation: "",
             f_Gender: "",
             f_Course: "",
-            f_Image: null
+            f_Image: null,
           });
           setImagePreview(null);
         } else {
@@ -131,7 +131,11 @@ const navigate = useNavigate()
       } catch (error) {
         console.error("Error creating employer:", error);
         // Check if the error is an Axios error
-        if (error.response && error.response.data && error.response.data.message) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
           toast.error(error.response.data.message);
         } else {
           toast.error("An unexpected error occurred. Please try again.");
@@ -140,11 +144,11 @@ const navigate = useNavigate()
     }
   };
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
       // Redirect to login page if token is missing
-      navigate('/login');
-      toast.error('Session expired. Please log in again.');
+      navigate("/login");
+      toast.error("Session expired. Please log in again.");
     }
   }, []);
 
@@ -152,7 +156,7 @@ const navigate = useNavigate()
     <div>
       <HeaderWithnav />
       <div className="flex items-center justify-center min-h-screen bg-gray-100 pt-14">
-      <ToastContainer/>
+        <ToastContainer />
         <form
           onSubmit={handleSubmit}
           className="bg-white p-10 rounded-lg shadow-lg"
@@ -337,12 +341,12 @@ const navigate = useNavigate()
                 errors.f_Image ? "border-red-500" : "border-gray-300"
               } rounded-md focus:outline-none focus:border-blue-500`}
               accept="image/png,image/jpg"
-                            onChange={handleChange}
+              onChange={handleChange}
             />
           </div>
           {errors.f_Image && (
-    <p className="text-red-500 text-sm mt-2">{errors.f_Image}</p>
-  )}
+            <p className="text-red-500 text-sm mt-2">{errors.f_Image}</p>
+          )}
           {imagePreview && (
             <div className="relative mb-4 flex items-center">
               <label className="block text-gray-700 w-24">Preview</label>

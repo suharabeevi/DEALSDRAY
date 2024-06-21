@@ -16,7 +16,7 @@ function App() {
           <Route path="/home" element={<DashBoardpages />} />
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/EmployerList" element={<Allemployerlist />} />
-          <Route path="/editEmployee" exact element={<UpdateEmployer />} />
+          <Route path="/editEmployee/:EmpId" exact element={<UpdateEmployer />} />
 
           <Route
             path="/createEmployee*"

@@ -2,14 +2,13 @@ const asyncHandler = require("express-async-handler");
 const AppError = require("../utils/AppError");
 // const config = require('../utils/constants')
 const HttpStatusCodes = require("../utils/middlewares/statusCodes");
-const JoiEmployeeUpdateSchemavalidate = require('../utils/updateEmployevalidation')
 const {
   Employee,
   JoiEmployeeSchemavalidate,
 } = require("../models/EmployerModel");
 const crypto = require("crypto");
 
-const AdminCreateEmployer = asyncHandler(async (req, res, next) => {
+const   AdminCreateEmployer = asyncHandler(async (req, res, next) => {
   try {
 
     // Validate the request body
@@ -130,24 +129,24 @@ const DeleteEmployerById = asyncHandler(async (req, res, next) => {
 const updateEmployer = asyncHandler(async(req,res,next)=>{
 
   try {
-
-    const { error } = JoiEmployeeUpdateSchemavalidate(req.body);
+    console.log(req.params, req.body);
+    const { error } = JoiEmployeeSchemavalidate(req.body);
     if (error) {
       return res.status(HttpStatusCodes.BAD_REQUEST).json({
         success: false,
         message: error.details[0].message
       });
     }
-    console.log(req.params, req.body);
+    
     const { EmployerId } = req.params;
 
     const {
-      U_f_Name,
-      U_f_Email,
-      U_f_Mobile,
-      U_f_Designation,
-      U_f_Gender,
-      U_f_Course
+      f_Name,
+      f_Email,
+      f_Mobile,
+      f_Designation,
+      f_Gender,
+      f_Course
     } = req.body;
 
     let update_employeimageUrl;
@@ -160,12 +159,12 @@ const updateEmployer = asyncHandler(async(req,res,next)=>{
       EmployerId,
       {
         f_Image:update_employeimageUrl,
-        f_Name :U_f_Name,
-        f_Email:U_f_Email,
-        f_Mobile:U_f_Mobile,
-        f_Designation:U_f_Designation,
-        f_Gender:U_f_Gender,
-        f_Course:U_f_Course
+        f_Name ,
+        f_Email,
+        f_Mobile,
+        f_Designation,
+        f_Gender,
+        f_Course
         
         // Add other fields you want to update
       },
@@ -195,4 +194,24 @@ const updateEmployer = asyncHandler(async(req,res,next)=>{
   }
 });
 
-module.exports = { AdminCreateEmployer, GetAllEmployer ,DeleteEmployerById,updateEmployer};
+const getDetailsOfEmployee = asyncHandler(async(req,res,next)=>{
+  console.log(req.params);
+   const {id} = req.params
+   const employeeDetails =  await Employee.findById(id)
+   console.log(employeeDetails);
+   if (!employeeDetails) {
+    return res.status(HttpStatusCodes.NOT_FOUND).json({
+      success: false,
+      message: "not found"
+    });
+  }
+  res.status(HttpStatusCodes.SUCCESS).json({
+    success: true,
+    data:employeeDetails,
+    message: 'Employer get successfully',
+  });
+
+   
+})
+
+module.exports = { AdminCreateEmployer, GetAllEmployer ,DeleteEmployerById,updateEmployer,getDetailsOfEmployee};

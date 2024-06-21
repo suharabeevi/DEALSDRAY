@@ -7,6 +7,7 @@ const {
   GetAllEmployer,
   DeleteEmployerById,
   updateEmployer,
+  getDetailsOfEmployee,
 } = require("../controllers/EmployerController");
 
 // const handleVerifyAdmin = require("../utils/middlewares/VerifyAdmin");
@@ -24,6 +25,8 @@ router.route("/deleteEmploye/:EmployerId").delete(DeleteEmployerById)
 router.route("/updateEmployer/:EmployerId")
 .all(IMGupload)
 .put(updateEmployer)
+
+router.route("/employee/:id").get(getDetailsOfEmployee)
 
 
 

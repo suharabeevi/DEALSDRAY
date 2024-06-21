@@ -13,7 +13,7 @@ const handleVerifyAdmin = asyncHandler(async (req, res, next) => {
           const err = new AppError(error.message, HttpStatusCodes.UNAUTHORIZED);
           next(err);
         }
-        console.log(decoded,"admin");
+        
         if(decoded.role === !'admin'){
           const err = new AppError("This user does not have the access", HttpStatusCodes.UNAUTHORIZED);
           next(err);
